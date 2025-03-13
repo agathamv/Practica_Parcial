@@ -1,9 +1,6 @@
 const mongoose = require("mongoose")
 const UsersModel = new mongoose.Schema(
     {
-        name: {
-            type: String
-        },
         email: {
             type: String,
             unique: true
@@ -11,14 +8,16 @@ const UsersModel = new mongoose.Schema(
         password:{
             type: String 
         },
-        codigo:{
+        codigo:{ //codigo de verificacion
             type:Number,
         },
-        intentos:{
+        intentos:{ //intentos de verificacion
             type:Number,
+            default: 0
         },
-        status:{
+        status:{ //estado de verificacion
             type:Boolean,
+            default: false
         },
         role:{
             type: ["user", "admin"],
