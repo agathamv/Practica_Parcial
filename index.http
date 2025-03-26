@@ -1,11 +1,26 @@
 ###
-POST http://localhost:3000/api/users
+POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
     {
-        "email": "a@ej.es",
-        "password": "1a"
+        "email": "pepe@gmail.com",
+        "password": "Abcd1234"
     }
 
 ###
 GET http://localhost:3000/api/users
+
+###
+DELETE http://localhost:3000/api/users/pepe@gmail.com
+
+###
+POST http://localhost:3000/mail
+Content-Type: application/json
+
+    {
+        "subject": "prueba",
+        "text": "esto es una prueba",
+        "to": "agathamartinv@gmail.com",
+        "from": "agathamartinv@gmail.com"
+
+    }

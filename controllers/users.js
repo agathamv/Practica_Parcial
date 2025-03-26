@@ -1,27 +1,31 @@
 const { matchedData } = require("express-validator");
 const UserModel = require('../models/users.js');
+const bcrypt = require("bcrypt");
+const { handleHttpError } = require("../utils/handleError");
 
 const getItem = async (req, res) => {
     try {
         const { email } = matchedData(req);
-        const data = await UserModel.findOne({email: email }); // Usar "_id" correctamente
+        const data = await UserModel.findOne({email: email });
         if (!data) {
-            return ;
+            return res.status(404).json({ error: "Usuario no encontrado" });
         }
         res.json(data);
     } catch (err) {
         console.error("Error en getItem:", err);
+        handleHttpError(res, "Error en la obtención del usuario", 500);
     }
 };
 
 
 const getItems = async (req, res) => {
     try{
-        console.log(req);
+        //console.log(req);
         const data = await UserModel.find();
-        res.send(data);
+        res.json(data);
     }catch(err){
         console.error("Error en getItems:", err);
+        handleHttpError(res, "Error en la obtención de los usuarios", 500);
     }
         
 }
@@ -29,7 +33,20 @@ const getItems = async (req, res) => {
 const createItem = async (req, res) => {
     try{
         const body = matchedData(req);
-        const data = await UserModel.create(body);
+        const hashedPassword = await bcrypt.hash(body.password, 10);
+        const verificationCode = Math.floor(100000 + Math.random() * 900000);
+
+        const data = new UserModel({
+            email: body.email,
+            password: hashedPassword,
+            codigo: verificationCode,
+            intentos: 3,
+            status: false,
+            role: "user"
+        });
+
+        await data.save();
+
         res.json(data);
     }catch(err){
         console.error("Error en createItem:", err);

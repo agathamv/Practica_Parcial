@@ -4,15 +4,12 @@ const {getItem, getItems, updateItem, createItem, deleteItem} = require ('../con
 
 const {validatorCreateItem, validatorGetItem} = require("../validators/users");
 
-const userRouter = express.Router();
+const router = express.Router();
 
-userRouter.get('/:email', validatorGetItem, getItem);
-userRouter.get('/', getItems);
-userRouter.post("/", validatorCreateItem, createItem);
-userRouter.put('/:email', (req, res) => {
-    console.log(req.params);
-    updateItem(req, res);
-});
-userRouter.delete('/:email', deleteItem);
+router.get('/:email', validatorGetItem, getItem);
+router.get('/', getItems);
+router.post("/", validatorCreateItem, createItem);
+router.put('/:email', validatorGetItem, updateItem);
+router.delete('/:email', validatorGetItem, deleteItem);
 
-module.exports = userRouter;
+module.exports = router;

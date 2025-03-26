@@ -1,5 +1,5 @@
 const {check} = require('express-validator');
-const handleValidator = require('../utils/handleValidator.js');
+const handleValidator = require('../utils/handleValidators.js');
 
 const validatorCreateItem = [
     check("email").exists().notEmpty(),
@@ -8,7 +8,7 @@ const validatorCreateItem = [
 ];
 
 const validatorGetItem = [
-    check("email").exists().notEmpty(),
+    check("email").exists().notEmpty().isEmail().withMessage("Debe ser un email válido"),
     handleValidator
 ];
 
