@@ -6,10 +6,10 @@ const encrypt = async (clearPassword) => {
     return hash
 }
 
-/*const compare = async (clearPassword, hashedPassword) => {
+const compare = async (clearPassword, hashedPassword) => {
     // Compara entre la password en texto plano y su hash calculado anteriormente para decidir si coincide.
     const result = await bcryptjs.compare(clearPassword, hashedPassword)
     return result
-}*/
+}
 
-module.exports = { encrypt }
+module.exports = { encrypt, compare}

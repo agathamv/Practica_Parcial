@@ -3,8 +3,8 @@ const { matchedData } = require("express-validator")
 const { encrypt } = require("../utils/handlePassword")
 const {usersModel} = require("../models")
 const router = express.Router()
-const {validatorRegister, va} = require("../validators/auth")
-const { registerCtrl } = require("../controllers/auth")
+const {validatorRegister, validatorLogin} = require("../validators/auth")
+const { registerCtrl, loginCtrl} = require("../controllers/auth")
 const { tokenSign } = require("../utils/handleJwt")
 
 // Posteriormente, llevaremos la lógica al controller
@@ -17,6 +17,25 @@ router.post("/register", validatorRegister, registerCtrl, async (req, res) => {
     const data = {
         token: await tokenSign(dataUser),
         user: dataUser
+    }
+    res.send(data)
+})
+
+router.post("/login", validatorLogin, loginCtrl,async (req, res) => {
+    req = matchedData(req)
+    const user = await usersModel.findOne({ email: req.email })
+    if (!user) {
+        return res.status(404).send({ error: "User not found" })
+    }
+
+    const isPasswordValid = await compare(req.password, user.password)
+
+    if (!isPasswordValid) {
+        return res.status(401).send({ error: "Invalid password" })
+    }
+    const data = {
+        token: await tokenSign(user),
+        user
     }
     res.send(data)
 })

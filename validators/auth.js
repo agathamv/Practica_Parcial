@@ -7,8 +7,7 @@ const validatorRegister = [
     check("email").exists().notEmpty().isEmail().custom(async (email) => {
         const existingUser = await usersModel.findOne({ email, status: true }); // Solo emails verificados
         if (existingUser) {
-            const error = new Error("El email ya está registrado y verificado");
-            error.status = 409; 
+            handleHttpError(res, "El email ya está registrado y verificado", 409);
             throw error;
         }
     }),
