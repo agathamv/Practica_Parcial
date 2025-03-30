@@ -4,11 +4,13 @@ const {encrypt} = require("../utils/handlePassword")
 const {usersModel} = require("../models")
 const {tokenSign} = require("../utils/handleJwt")
 
+
 const registerCtrl = async (req, res) => {
     try {
         req = matchedData(req)
         const password = await encrypt(req.password)
-        const body = {...req, password}
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString()
+        const body = {...req, password, codigo: verificationCode}
         const dataUser = await usersModel.create(body)
         dataUser.set("password", undefined, {strict:false})
 
@@ -20,6 +22,7 @@ const registerCtrl = async (req, res) => {
                 email: dataUser.email,
                 status: dataUser.status,
                 role: dataUser.role,
+                codigo: dataUser.codigo
             }
         };
 
@@ -29,5 +32,7 @@ const registerCtrl = async (req, res) => {
         handleHttpError(res, "ERROR_REGISTER_USER")
     }
 }
+
+
 
 module.exports = {registerCtrl}

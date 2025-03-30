@@ -12,4 +12,9 @@ const validatorGetItem = [
     handleValidator
 ];
 
-module.exports = {validatorCreateItem, validatorGetItem};
+
+const validatorValidateCode = [
+    check("code").exists().notEmpty().isLength({ min: 6, max: 6 }).withMessage("El código debe tener 6 dígitos."),
+    handleValidator
+]; 
+module.exports = {validatorCreateItem, validatorGetItem, validatorValidateCode};
