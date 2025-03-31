@@ -96,4 +96,45 @@ const PersonalDataCtrl = async (req, res) => {
     }
 };
 
-module.exports = {registerCtrl, loginCtrl, PersonalDataCtrl}
+const companyCtrl = async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return handleHttpError(res, "No se proporcionó token", 401);
+        }
+
+        const token = authHeader.split(" ")[1];
+        const decoded = await verifyToken(token);
+
+        if (!decoded || !decoded._id) {
+            return handleHttpError(res, "Token inválido", 401);
+        }
+
+        const user = await usersModel.findById(decoded._id);
+        if (!user) {
+            return handleHttpError(res, "Usuario no encontrado", 404);
+        }
+
+        const { nombre, cif, direccion } = matchedData(req);
+
+        if (user.role === "autonomo") {
+            user.company = {
+                nombre: user.nombre,
+                cif: user.nif,
+                direccion 
+            };
+        } else {
+            user.company = { nombre, cif, direccion };
+        }
+
+        await user.save();
+
+        res.json({ message: "Datos de la compañía actualizados", company: user.company });
+    } catch (err) {
+        console.error("Error en companyCtrl:", err);
+        handleHttpError(res, "Error al actualizar los datos de la compañía", 500);
+    }
+};
+
+
+module.exports = {registerCtrl, loginCtrl, PersonalDataCtrl, companyCtrl}

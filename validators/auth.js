@@ -32,6 +32,10 @@ const validatorPersonalData = [
     (req, res, next) => validateResults(req, res, next)
 ];
 
+const validatorCompany = [
+    check("nombre").optional().isString().withMessage("El nombre debe ser una cadena de texto"),
+    check("cif").optional().isString().withMessage("El CIF debe ser una cadena de texto"),
+    check("direccion").optional().isString().withMessage("La dirección debe ser una cadena de texto"),
+];
 
-
-module.exports = { validatorRegister, validatorLogin, validatorPersonalData}
+module.exports = { validatorRegister, validatorLogin, validatorPersonalData, validatorCompany}

@@ -44,6 +44,16 @@ Content-Type: application/json
     }
 
 
+###
+PUT http://localhost:3000/api/auth/company
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2U5OGU2NTMxZmU1MjExYTViZGIwYTkiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MzQ0MTIzNywiZXhwIjoxNzQzNDQ4NDM3fQ.uOStzLTsvdZx5ZgAPio6or1aEQlDNCVGzhwZwelRuxE
+
+{
+    "nombre": "Mi Empresa S.L.",
+    "cif": "B12345678",
+    "direccion": "Calle Ejemplo 123, Madrid"
+}
 
 ###
 POST http://localhost:3000/mail

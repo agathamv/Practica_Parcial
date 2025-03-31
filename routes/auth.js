@@ -3,8 +3,8 @@ const { matchedData } = require("express-validator")
 const { encrypt } = require("../utils/handlePassword")
 const {usersModel} = require("../models")
 const router = express.Router()
-const {validatorRegister, validatorLogin, validatorPersonalData} = require("../validators/auth")
-const { registerCtrl, loginCtrl, PersonalDataCtrl} = require("../controllers/auth")
+const {validatorRegister, validatorLogin, validatorPersonalData, validatorCompany} = require("../validators/auth")
+const { registerCtrl, loginCtrl, PersonalDataCtrl, companyCtrl} = require("../controllers/auth")
 const { tokenSign } = require("../utils/handleJwt")
 
 
@@ -41,5 +41,7 @@ router.post("/login", validatorLogin, loginCtrl,async (req, res) => {
 })
 
 router.put("/personaldata", validatorPersonalData, PersonalDataCtrl);
+
+router.put("/company", validatorCompany, companyCtrl);
 
 module.exports = router

@@ -32,7 +32,19 @@ const UsersModel = new mongoose.Schema(
         },
         nif:{
             type: String,
+        },
+        company:{
+            nombre:{
+                type: String,
+            },
+            cif:{
+                type: String,
+            },
+            direccion:{
+                type: String,
+            }
         }
+
     },
     {
         timestamps: true,
