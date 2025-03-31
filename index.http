@@ -22,6 +22,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2U5OGU2N
     "code": 230484
 }
 
+###
+PUT http://localhost:3000/api/auth/personaldata
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2U5OGZmOWMxMTBlOWU4MDkzNTc1NDUiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MzQxODcyNSwiZXhwIjoxNzQzNDI1OTI1fQ.M6STti6_eB8j88kkTekVsp7c1R1Mm8UxUdYHuGQqc2I
+
+{
+    "nombre": "Pepe",
+    "apellidos": "García Pérez",
+    "nif": "12345678A"
+}
 
 
 ###

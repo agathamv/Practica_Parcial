@@ -2,7 +2,7 @@ const {handleHttpError} = require("../utils/handleError")
 const {matchedData} = require("express-validator")
 const {encrypt, compare} = require("../utils/handlePassword")
 const {usersModel} = require("../models")
-const {tokenSign} = require("../utils/handleJwt")
+const {tokenSign, verifyToken} = require("../utils/handleJwt")
 
 
 const registerCtrl = async (req, res) => {
@@ -59,5 +59,41 @@ const loginCtrl = async (req, res) => {
     }
 }
 
+const PersonalDataCtrl = async (req, res) => {
+    try {
+        // Validar y obtener datos del body
+        const { nombre, apellidos, nif } = matchedData(req);
 
-module.exports = {registerCtrl, loginCtrl}
+        // Obtener token desde headers
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return handleHttpError(res, "No se proporcionó token", 401);
+        }
+
+        // Extraer y verificar token
+        const token = authHeader.split(" ")[1];
+        const decoded = await verifyToken(token);
+
+        if (!decoded || !decoded._id) {
+            return handleHttpError(res, "Token inválido", 401);
+        }
+
+        // Buscar usuario y actualizarlo
+        const user = await usersModel.findById(decoded._id);
+        if (!user) {
+            return handleHttpError(res, "Usuario no encontrado", 404);
+        }
+
+        user.nombre = nombre;
+        user.apellidos = apellidos;
+        user.nif = nif;
+        await user.save();
+
+        res.json({ message: "Datos actualizados correctamente", user });
+    } catch (err) {
+        console.error("Error en onboarding:", err);
+        handleHttpError(res, "Error al actualizar los datos", 500);
+    }
+};
+
+module.exports = {registerCtrl, loginCtrl, PersonalDataCtrl}

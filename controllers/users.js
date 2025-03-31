@@ -19,7 +19,7 @@ const getItem = async (req, res) => {
     }
 };
 
-
+/*
 const getItems = async (req, res) => {
     try {
         const users = await usersModel.find();
@@ -41,6 +41,19 @@ const getItems = async (req, res) => {
         handleHttpError(res, "Error en la obtención de los usuarios", 500);
     }
 };
+*/
+
+const getItems = async (req, res) => {
+    try {
+        const data = await usersModel.find();
+        res.json(data);
+    } catch (err) {
+        console.error("Error en getItems:", err);
+        handleHttpError(res, "Error en la obtención de los usuarios", 500);
+    }
+};
+
+
 
 const createItem = async (req, res) => {
     try{

@@ -25,6 +25,13 @@ const validatorLogin = [
     }
 ]
 
+const validatorPersonalData = [
+    check("nombre").notEmpty().withMessage("El nombre es obligatorio"),
+    check("apellidos").notEmpty().withMessage("Los apellidos son obligatorios"),
+    check("nif").matches(/^\d{8}[A-Z]$/).withMessage("El NIF debe tener 8 dígitos seguidos de una letra"),
+    (req, res, next) => validateResults(req, res, next)
+];
 
 
-module.exports = { validatorRegister, validatorLogin }
+
+module.exports = { validatorRegister, validatorLogin, validatorPersonalData}

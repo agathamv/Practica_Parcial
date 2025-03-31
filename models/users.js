@@ -23,8 +23,16 @@ const UsersModel = new mongoose.Schema(
             type: String,
             enum: ["user", "admin"],
             default: "user"
+        },
+        nombre:{
+            type: String,
+        },
+        apellidos:{
+            type: String,
+        },
+        nif:{
+            type: String,
         }
-
     },
     {
         timestamps: true,
