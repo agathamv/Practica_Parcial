@@ -11,6 +11,10 @@ Content-Type: application/json
 GET http://localhost:3000/api/users
 
 ###
+GET http://localhost:3000/api/user/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2U5OGU2NTMxZmU1MjExYTViZGIwYTkiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MzQ1NDA2OSwiZXhwIjoxNzQzNDYxMjY5fQ.9ohjUZ93rotco31DC8yy4fdGBA6tyDP0kAnRKinvFnQ
+
+###
 DELETE http://localhost:3000/api/users/pepe@gmail.com
 
 ###

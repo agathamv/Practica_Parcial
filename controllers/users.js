@@ -21,6 +21,33 @@ const getItem = async (req, res) => {
     }
 };
 
+const getUserCtrl = async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return handleHttpError(res, "No se proporcionó token", 401);
+        }
+
+        const token = authHeader.split(" ")[1];
+        const decoded = await verifyToken(token);
+
+        if (!decoded || !decoded._id) {
+            return handleHttpError(res, "Token inválido", 401);
+        }
+
+        const user = await UserModel.findById(decoded._id).select("-password");
+        if (!user) {
+            return handleHttpError(res, "Usuario no encontrado", 404);
+        }
+
+        res.json(user);
+    } catch (err) {
+        console.error("Error en getUserCtrl:", err);
+        handleHttpError(res, "Error al obtener el usuario", 500);
+    }
+};
+
+
 
 const getItems = async (req, res) => {
     try {
@@ -182,4 +209,4 @@ const deleteItem = async (req, res) => {
 }
 
 
-module.exports = {getItem, getItems, verifyEmail, updateItem, createItem, deleteItem, updateLogoCtrl }
+module.exports = {getItem, getItems, verifyEmail, updateItem, createItem, deleteItem, updateLogoCtrl, getUserCtrl }
