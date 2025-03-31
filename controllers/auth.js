@@ -137,4 +137,7 @@ const companyCtrl = async (req, res) => {
 };
 
 
+
+
+
 module.exports = {registerCtrl, loginCtrl, PersonalDataCtrl, companyCtrl}

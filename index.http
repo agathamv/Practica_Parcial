@@ -55,6 +55,20 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2U5OGU2N
     "direccion": "Calle Ejemplo 123, Madrid"
 }
 
+### 
+PATCH http://localhost:3000/api/user/logo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2U5OGU2NTMxZmU1MjExYTViZGIwYTkiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MzQ1NDA2OSwiZXhwIjoxNzQzNDYxMjY5fQ.9ohjUZ93rotco31DC8yy4fdGBA6tyDP0kAnRKinvFnQ
+Content-Type: multipart/form-data; boundary=boundary123
+
+--boundary123
+Content-Disposition: form-data; name="logo"; filename="LogoUTAD.jpg"
+Content-Type: image/jpeg
+
+< ./LogoUTAD.jpg
+--boundary123--
+
+
+
 ###
 POST http://localhost:3000/mail
 Content-Type: application/json

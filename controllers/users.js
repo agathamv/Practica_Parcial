@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt");
 const { handleHttpError } = require("../utils/handleError");
 const { usersModel } = require("../models");
 const { verifyToken, tokenSign } = require("../utils/handleJwt");
+const { uploadMiddlewareMemory } = require("../utils/handleStorage");
+const { uploadToPinata } = require("../utils/handleUploadIPFS");
 
 const getItem = async (req, res) => {
     try {
@@ -19,7 +21,7 @@ const getItem = async (req, res) => {
     }
 };
 
-/*
+
 const getItems = async (req, res) => {
     try {
         const users = await usersModel.find();
@@ -41,7 +43,7 @@ const getItems = async (req, res) => {
         handleHttpError(res, "Error en la obtención de los usuarios", 500);
     }
 };
-*/
+/*
 
 const getItems = async (req, res) => {
     try {
@@ -52,7 +54,7 @@ const getItems = async (req, res) => {
         handleHttpError(res, "Error en la obtención de los usuarios", 500);
     }
 };
-
+*/
 
 
 const createItem = async (req, res) => {
@@ -121,6 +123,50 @@ const verifyEmail = async (req, res) => {
 };
 
 
+const updateLogoCtrl = async (req, res) => {
+    try {
+        uploadMiddlewareMemory.single("logo")(req, res, async (err) => {
+            if (err) {
+                return handleHttpError(res, "Error al subir la imagen: " + err.message, 400);
+            }
+
+            if (!req.file) {
+                return handleHttpError(res, "No se proporcionó una imagen", 400);
+            }
+
+            const authHeader = req.headers.authorization;
+            if (!authHeader) {
+                return handleHttpError(res, "No se proporcionó token", 401);
+            }
+
+            const token = authHeader.split(" ")[1];
+            const decoded = await verifyToken(token);
+
+            if (!decoded || !decoded._id) {
+                return handleHttpError(res, "Token inválido", 401);
+            }
+
+            const user = await usersModel.findById(decoded._id);
+            if (!user) {
+                return handleHttpError(res, "Usuario no encontrado", 404);
+            }
+
+            // Subir a IPFS
+            const ipfsResponse = await uploadToPinata(req.file.buffer, req.file.originalname);
+            const logoUrl = `https://gateway.pinata.cloud/ipfs/${ipfsResponse.IpfsHash}`;
+
+            // Guardar URL en la base de datos
+            user.logo = logoUrl;
+            await user.save();
+
+            res.json({ message: "Logo actualizado correctamente", logoUrl: user.logo });
+        });
+    } catch (err) {
+        console.error("Error en updateLogoCtrl:", err);
+        handleHttpError(res, "Error al actualizar el logo", 500);
+    }
+};
+
 const updateItem =  async (req, res) => {
     
     const email = req.params.email;
@@ -136,4 +182,4 @@ const deleteItem = async (req, res) => {
 }
 
 
-module.exports = {getItem, getItems, verifyEmail, updateItem, createItem, deleteItem}
+module.exports = {getItem, getItems, verifyEmail, updateItem, createItem, deleteItem, updateLogoCtrl }

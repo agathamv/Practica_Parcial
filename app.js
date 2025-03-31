@@ -12,6 +12,10 @@ app.use(express.json());
 
 app.use("/api", require("./routes"));
 
+const userRoutes = require("./routes/users");
+app.use("/api/user", userRoutes);
+
+
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
