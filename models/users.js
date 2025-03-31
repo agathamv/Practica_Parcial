@@ -43,6 +43,10 @@ const UsersModel = new mongoose.Schema(
             direccion:{
                 type: String,
             }
+        },
+        deleted:{
+            type: Boolean,
+            default: false
         }
 
     },

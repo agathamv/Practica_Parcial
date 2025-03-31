@@ -3,7 +3,7 @@ POST http://localhost:3000/api/auth/register
 Content-Type: application/json
 
     {
-        "email": "pepe@gmail.com",
+        "email": "prueba@gmail.com",
         "password": "Abcd1234"
     }
 
@@ -16,6 +16,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2U5OGU2N
 
 ###
 DELETE http://localhost:3000/api/users/pepe@gmail.com
+
+###
+DELETE http://localhost:3000/api/user
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2ViMDYzNGE2ZGVmMzE5NGI2Nzc0NDIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MzQ1NTgwNywiZXhwIjoxNzQzNDYzMDA3fQ.adOXNoBWjDckzR06SY0Ta9xY1r3ksLk1PNrlpsR9lgE
+
+
+###
+DELETE http://localhost:3000/api/user?soft=false
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2N2ViMDYzNGE2ZGVmMzE5NGI2Nzc0NDIiLCJyb2xlIjoidXNlciIsImlhdCI6MTc0MzQ1NTgwNywiZXhwIjoxNzQzNDYzMDA3fQ.adOXNoBWjDckzR06SY0Ta9xY1r3ksLk1PNrlpsR9lgE
+
 
 ###
 PUT http://localhost:3000/api/users/verify

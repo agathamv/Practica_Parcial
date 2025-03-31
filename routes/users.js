@@ -16,7 +16,7 @@ router.put("/verify", validatorValidateCode, verifyEmail);
 router.patch("/logo", updateLogoCtrl);
 
 router.put('/:email', validatorGetItem, updateItem);
-router.delete('/:email', validatorGetItem, deleteItem);
+router.delete('/', deleteItem);
 
 module.exports = router;
 

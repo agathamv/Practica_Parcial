@@ -60,7 +60,8 @@ const getItems = async (req, res) => {
                 status: user.status,
                 role: user.role,
                 codigo: user.codigo,
-                token
+                token,
+                deleted: user.deleted,
             };
         }));
 
@@ -203,10 +204,47 @@ const updateItem =  async (req, res) => {
     res.json(data)
 }
 
-const deleteItem = async (req, res) => {
+/*const deleteItem = async (req, res) => {
     const data = await UserModel.findOneAndDelete({email: req.params.email})
     res.json(data)
-}
+}*/
+
+
+const deleteItem = async (req, res) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            return handleHttpError(res, "No se proporcionó token", 401);
+        }
+
+        const token = authHeader.split(" ")[1];
+        const decoded = await verifyToken(token);
+
+        if (!decoded || !decoded._id) {
+            return handleHttpError(res, "Token inválido", 401);
+        }
+
+        const user = await UserModel.findById(decoded._id);
+        if (!user) {
+            return handleHttpError(res, "Usuario no encontrado", 404);
+        }
+
+        const softDelete = req.query.soft !== "false"; // Soft delete por defecto
+        if (softDelete) {
+            user.deleted = true;
+            await user.save();
+            return res.json({ message: "Usuario marcado como eliminado (soft delete)" });
+        } else {
+            await UserModel.findByIdAndDelete(decoded._id);
+            return res.json({ message: "Usuario eliminado definitivamente (hard delete)" });
+        }
+
+    } catch (err) {
+        console.error("Error en deleteUserCtrl:", err);
+        handleHttpError(res, "Error al eliminar el usuario", 500);
+    }
+};
+
 
 
 module.exports = {getItem, getItems, verifyEmail, updateItem, createItem, deleteItem, updateLogoCtrl, getUserCtrl }
